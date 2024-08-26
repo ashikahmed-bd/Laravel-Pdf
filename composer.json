@@ -1,0 +1,32 @@
+{
+    "name": "ashik/pdf",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Ashik\\Pdf\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Ashik Ahmed",
+            "email": "md.ashikahmed@outlook.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": "^8.0",
+        "mpdf/mpdf": "v8.2.1"
+    },
+
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Ashik\\Pdf\\PdfServiceProvider"
+            ],
+            "aliases": {
+                "PDF": "Ashik\\Pdf\\Facades\\Pdf"
+            }
+        }
+    }
+}
