@@ -7,9 +7,8 @@ use Mpdf\MpdfException;
 use Mpdf\Output\Destination;
 use Illuminate\Support\Facades\Config;
 
-class Pdf
+class PdfWrapper
 {
-
     protected $mpdf;
     protected $config = [];
 
@@ -82,7 +81,7 @@ class Pdf
     /**
      * @throws MpdfException
      */
-    public function loadView($view, $data = []): Pdf
+    public function loadView($view, $data = []): PdfWrapper
     {
         $html = view($view, $data)->render();
         $this->mpdf->WriteHTML($html);
@@ -120,5 +119,11 @@ class Pdf
     public function stream(string $filename = 'document.pdf')
     {
         return $this->mpdf->Output($filename, Destination::INLINE);
+    }
+
+    public function setPaper($size = 'A4', $orientation = 'P')
+    {
+        $this->mpdf->_setPageSize($size, $orientation);
+        return $this;
     }
 }
