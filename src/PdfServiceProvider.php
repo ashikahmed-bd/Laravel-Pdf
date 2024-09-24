@@ -18,7 +18,7 @@ class PdfServiceProvider extends ServiceProvider
             __DIR__ . '/../config/pdf.php', 'pdf'
         );
 
-        $this->app->bind('pdf', function ($app) {
+        $this->app->singleton('pdf.wrapper', function () {
             return new PdfWrapper();
         });
     }

@@ -2,6 +2,7 @@
 
 namespace Ashik\Pdf;
 
+use Illuminate\Support\Facades\View;
 use Mpdf\Mpdf;
 use Mpdf\MpdfException;
 use Mpdf\Output\Destination;
@@ -78,14 +79,18 @@ class PdfWrapper
         return $this->config[$key] ?? Config::get('pdf.' . $key);
     }
 
-    /**
-     * @throws MpdfException
-     */
-    public function loadView($view, $data = []): PdfWrapper
+    // Method to load raw HTML
+    public function loadHTML($html): static
     {
-        $html = view($view, $data)->render();
         $this->mpdf->WriteHTML($html);
         return $this;
+    }
+
+    // Method to load a Blade view and convert it to HTML
+    public function loadView($view, $data = []): static
+    {
+        $html = View::make($view, $data)->render();
+        return $this->loadHTML($html);
     }
 
 
@@ -100,7 +105,7 @@ class PdfWrapper
     /**
      * @throws MpdfException
      */
-    public function save(string $filename)
+    public function save(string $filename): ?string
     {
         return $this->mpdf->Output($filename, Destination::FILE);
     }
@@ -108,7 +113,7 @@ class PdfWrapper
     /**
      * @throws MpdfException
      */
-    public function download(string $filename = 'document.pdf')
+    public function download(string $filename = 'document.pdf'): ?string
     {
         return $this->mpdf->Output($filename, Destination::DOWNLOAD);
     }
@@ -116,14 +121,24 @@ class PdfWrapper
     /**
      * @throws MpdfException
      */
-    public function stream(string $filename = 'document.pdf')
+    public function stream(string $filename = 'document.pdf'): ?string
     {
         return $this->mpdf->Output($filename, Destination::INLINE);
     }
 
-    public function setPaper($size = 'A4', $orientation = 'P')
+    /**
+     * @throws MpdfException
+     */
+    public function setPaper($size = 'A4', $orientation = 'P'): static
     {
         $this->mpdf->_setPageSize($size, $orientation);
+        return $this;
+    }
+
+    // Additional method to set any mPDF configuration options
+    public function setOption($key, $value): static
+    {
+        $this->mpdf->$key = $value;
         return $this;
     }
 }
