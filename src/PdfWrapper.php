@@ -10,8 +10,8 @@ use Illuminate\Support\Facades\Config;
 
 class PdfWrapper
 {
-    protected $mpdf;
-    protected $config = [];
+    protected Mpdf $mpdf;
+    protected array $config = [];
 
     /**
      * @throws MpdfException
@@ -74,6 +74,10 @@ class PdfWrapper
         $this->mpdf->PDFAauto           = $this->getConfig('pdfaauto') ?: false;
         // use active forms
         $this->mpdf->useActiveForms = $this->getConfig('use_active_forms');
+
+        $this->mpdf->header('Content-Type', 'application/pdf');
+        $this->mpdf->header('Access-Control-Allow-Origin', '*');  // Allow any origin or specify the allowed origin;
+        $this->mpdf->header('Access-Control-Expose-Headers', 'Content-Disposition'); // Expose headers for download
     }
 
     protected function getConfig($key)
