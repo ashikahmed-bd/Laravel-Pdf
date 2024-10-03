@@ -82,7 +82,7 @@ class PdfWrapper
     }
 
     // Method to load raw HTML
-    public function loadHTML($html): static
+    public function loadHTML($html)
     {
         $this->mpdf->WriteHTML($html);
         return $this;
@@ -117,7 +117,17 @@ class PdfWrapper
      */
     public function download(string $filename = 'document.pdf'): ?string
     {
-        return $this->mpdf->Output($filename, Destination::DOWNLOAD);
+        $output = $this->mpdf->Output($filename, Destination::DOWNLOAD);
+
+        // Add CORS headers to the PDF response
+        return response($output, 200)
+            ->header('Content-Type', 'application/pdf')
+            ->header('Cache-Control', 'no-cache, must-revalidate')
+            ->header('Content-Disposition', 'inline; filename="invoice.pdf"')
+            ->header('Access-Control-Allow-Origin', '*') // Allow cross-origin access
+            ->header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
+            ->header('Access-Control-Allow-Headers', 'Origin, Content-Type, Accept')
+            ->header('Access-Control-Expose-Headers', 'Content-Disposition'); // Expose content-disposition header for download
     }
 
     /**
