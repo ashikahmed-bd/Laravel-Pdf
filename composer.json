@@ -11,10 +11,11 @@
         }
     ],
     "minimum-stability": "dev",
-    
+
     "require": {
         "php": "^8.0",
-        "mpdf/mpdf": "v8.2.1"
+        "mpdf/mpdf": "v8.2.1",
+        "ext-openssl": "*"
     },
     "autoload": {
         "psr-4": {

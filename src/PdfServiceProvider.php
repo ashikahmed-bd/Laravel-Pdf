@@ -6,6 +6,12 @@ use Illuminate\Support\ServiceProvider;
 
 class PdfServiceProvider extends ServiceProvider
 {
+    /**
+     * Indicates if loading of the provider is deferred.
+     *
+     * @var bool
+     */
+    protected bool $defer = false;
 
     /**
      * Register services.
@@ -18,7 +24,7 @@ class PdfServiceProvider extends ServiceProvider
             __DIR__ . '/../config/pdf.php', 'pdf'
         );
 
-        $this->app->singleton('pdf.wrapper', function () {
+        $this->app->singleton('mpdf.wrapper', function ($app) {
             return new PdfWrapper();
         });
     }
@@ -34,5 +40,17 @@ class PdfServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__.'/../config/pdf.php' => config_path('pdf.php')
         ], 'pdf-config');
+    }
+
+    /**
+     * Get the services provided by the provider.
+     *
+     * @return array
+     */
+    public function provides(): array
+    {
+        return [
+            'mpdf'
+        ];
     }
 }
