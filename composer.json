@@ -1,0 +1,36 @@
+{
+    "name": "ashik/pdf",
+    "description": "A custom Laravel package for generating PDFs using mPDF with Facades and a Wrapper",
+    "type": "library",
+    "license": "MIT",
+
+    "authors": [
+        {
+            "name": "Ashik Ahmed",
+            "email": "md.ashikahmed@outlook.com"
+        }
+    ],
+    "minimum-stability": "dev",
+
+    "require": {
+        "php": "^8.3",
+        "mpdf/mpdf": "v8.2.4",
+        "ext-openssl": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Ashik\\Pdf\\": "src/"
+        }
+    },
+
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Ashik\\Pdf\\PdfServiceProvider"
+            ],
+            "aliases": {
+                "Pdf": "Ashik\\Pdf\\Facades\\Pdf"
+            }
+        }
+    }
+}
